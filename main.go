@@ -14,6 +14,8 @@ import (
 	"github.com/crillab/gophersat/solver"
 )
 
+const helpString = "This is gophersat version 1.3, a SAT and Pseudo-Boolean solver by Fabien Delorme.\n"
+
 func main() {
 	// defer profile.Start().Stop()
 	debug.SetGCPercent(300)
@@ -31,13 +33,13 @@ func main() {
 	flag.BoolVar(&help, "help", false, "displays help")
 	flag.Parse()
 	if !help && len(flag.Args()) != 1 {
-		fmt.Printf("This is gophersat version 1.3, a SAT and Pseudo-Boolean solver by Fabien Delorme.\n")
+		fmt.Printf(helpString)
 		fmt.Fprintf(os.Stderr, "Syntax : %s [options] (file.cnf|file.wcnf|file.bf|file.opb)\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 	if help {
-		fmt.Printf("This is gophersat version 1.3, a SAT and Pseudo-Boolean solver by Fabien Delorme.\n")
+		fmt.Printf(helpString)
 		fmt.Printf("Syntax : %s [options] (file.cnf|file.wcnf|file.bf|file.opb)\n", os.Args[0])
 		flag.PrintDefaults()
 		os.Exit(0)
@@ -71,6 +73,7 @@ func main() {
 }
 
 func extractMUS(path string) {
+
 	f, err := os.Open(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not parse problem: %v\n", err)
@@ -82,11 +85,13 @@ func extractMUS(path string) {
 		fmt.Fprintf(os.Stderr, "could not parse problem: %v\n", err)
 		os.Exit(1)
 	}
+
 	pb2, err := pb.MUS()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not extract subset: %v\n", err)
 		os.Exit(1)
 	}
+
 	fmt.Println(pb2.CNF())
 }
 

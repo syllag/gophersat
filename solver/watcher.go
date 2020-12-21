@@ -39,6 +39,16 @@ func (s *Solver) initWatcherList(clauses []*Clause) {
 	}
 }
 
+// Should be called when new vars are added to the problem (see Solver.newVar)
+func (s *Solver) addVarWatcherList(v Var) {
+	cnfVar := int(v.Int())
+	for i := s.nbVars; i < cnfVar; i++ {
+		s.wl.wlistBin = append(s.wl.wlistBin, nil, nil)
+		s.wl.wlist = append(s.wl.wlist, nil, nil)
+		s.wl.wlistPb = append(s.wl.wlistPb, nil, nil)
+	}
+}
+
 // appendClause appends the clause without checking whether the clause is already satisfiable, unit, or unsatisfiable.
 // To perform those checks, call s.AppendClause.
 // clause is supposed to be a problem clause, not a learned one.
@@ -167,6 +177,7 @@ func (s *Solver) addLearned(c *Clause) {
 
 // Adds the given unit literal to the model at the top level.
 func (s *Solver) addLearnedUnit(unit Lit) {
+
 	s.model[unit.Var()] = lvlToSignedLvl(unit, 1)
 	if s.Certified {
 		if s.CertChan == nil {
