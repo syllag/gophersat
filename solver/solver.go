@@ -127,6 +127,11 @@ func New(problem *Problem) *Solver {
 	return s
 }
 
+//NbVars return the number of variables of the associated problem
+func (s *Solver) NbVars() int {
+	return s.nbVars
+}
+
 // newVar is used to indicate a new variable must be added to the solver.
 // This can be used when new clauses are appended and these clauses contain vars that were unseen so far.
 // If the var already existed, nothing will happen.
